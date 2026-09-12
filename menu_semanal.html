@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Menú Semanal - Roberto Jiménez</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f0;min-height:100vh}
+.app{max-width:430px;margin:0 auto;padding:12px}
+h1{font-size:17px;font-weight:600;color:#1a1a18;margin-bottom:14px;text-align:center}
+.subtitle{font-size:12px;color:#888;text-align:center;margin-top:-10px;margin-bottom:14px}
+.nav{display:flex;gap:1px;background:#e0e0d8;border-radius:10px;overflow:hidden;margin-bottom:16px}
+.nav-btn{flex:1;padding:9px 4px;text-align:center;font-size:12px;font-weight:500;background:#fff;color:#888;cursor:pointer;transition:all .15s}
+.nav-btn.active{color:#185fa5}
+.badge{display:inline-flex;align-items:center;justify-content:center;background:#185fa5;color:white;border-radius:10px;font-size:10px;font-weight:500;min-width:18px;height:18px;padding:0 5px;margin-left:4px}
+.tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:7px 14px;border-radius:20px;border:0.5px solid #ccc;background:#fff;color:#888;font-size:13px;cursor:pointer;transition:all .15s}
+.tab.active{background:#185fa5;color:#fff;border-color:#185fa5}
+.day-view{display:none}.day-view.active{display:block}
+.section-title{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding:0 2px}
+.meal-card{background:#fff;border:0.5px solid #e0e0d8;border-radius:12px;margin-bottom:8px;overflow:hidden}
+.meal-header{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.meal-icon{font-size:18px}
+.meal-name{flex:1;font-size:14px;font-weight:500;color:#1a1a18}
+.meal-kcal{font-size:12px;color:#aaa}
+.meal-check{width:22px;height:22px;border-radius:6px;border:1.5px solid #ccc;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.meal-check.checked{background:#185fa5;border-color:#185fa5}
+.meal-check i{color:white;font-size:13px}
+.ingredients{padding:0 14px 12px;border-top:0.5px solid #f0f0e8}
+.ing-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:#666;border-bottom:0.5px solid #f0f0e8}
+.ing-item:last-child{border-bottom:none}
+.ing-name{flex:1}
+.ing-qty{color:#aaa;font-size:12px}
+.shopping{background:#fff;border-radius:12px;border:0.5px solid #e0e0d8;overflow:hidden}
+.shop-header{padding:14px 16px;border-bottom:0.5px solid #e0e0d8;display:flex;align-items:center;justify-content:space-between}
+.shop-title{font-size:15px;font-weight:500;color:#1a1a18}
+.shop-count{font-size:12px;color:#aaa}
+.shop-empty{padding:32px;text-align:center;color:#aaa;font-size:13px}
+.shop-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:0.5px solid #f0f0e8;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .1s}
+.shop-item:last-child{border-bottom:none}
+.shop-item:active{background:#f5f5f0}
+.shop-cb{width:22px;height:22px;border-radius:50%;border:1.5px solid #ccc;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.shop-cb.done{background:#1D9E75;border-color:#1D9E75}
+.shop-cb i{font-size:12px;color:transparent}
+.shop-cb.done i{color:white}
+.shop-label{flex:1;font-size:14px;color:#1a1a18}
+.shop-label.done{text-decoration:line-through;color:#aaa}
+.shop-qty{font-size:12px;color:#aaa}
+.footer{text-align:center;font-size:11px;color:#ccc;margin-top:16px;padding-bottom:16px}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>🥗 Menú Semanal</h1>
+<p class="subtitle">Roberto Jiménez · NutriPro · Sep 2026</p>
+
+<div class="nav">
+  <div class="nav-btn active" onclick="showView('menu')"><i class="ti ti-calendar"></i> Menú</div>
+  <div class="nav-btn" onclick="showView('lista')" id="lista-btn"><i class="ti ti-shopping-cart"></i> Lista</div>
+</div>
+
+<div id="view-menu">
+<div class="tabs">
+  <div class="tab active" onclick="showDay('lun',this)">Lun</div>
+  <div class="tab" onclick="showDay('mar',this)">Mar</div>
+  <div class="tab" onclick="showDay('mie',this)">Mié</div>
+  <div class="tab" onclick="showDay('jue',this)">Jue</div>
+  <div class="tab" onclick="showDay('vie',this)">Vie</div>
+  <div class="tab" onclick="showDay('sab',this)">Sáb</div>
+  <div class="tab" onclick="showDay('dom',this)">Dom</div>
+</div>
+<div id="day-lun" class="day-view active"></div>
+<div id="day-mar" class="day-view"></div>
+<div id="day-mie" class="day-view"></div>
+<div id="day-jue" class="day-view"></div>
+<div id="day-vie" class="day-view"></div>
+<div id="day-sab" class="day-view"></div>
+<div id="day-dom" class="day-view"></div>
+</div>
+
+<div id="view-lista" style="display:none">
+  <div class="shopping">
+    <div class="shop-header">
+      <span class="shop-title">Lista de la compra</span>
+      <span class="shop-count" id="shop-count">0 productos</span>
+    </div>
+    <div id="shop-list"><div class="shop-empty">Selecciona comidas en el menú para añadir productos</div></div>
+  </div>
+</div>
+
+<div class="footer">Toca una comida para ver ingredientes y añadirla a la lista</div>
+</div>
+
+<script>
+const MENU={lun:{label:"Lunes",meals:[{id:"lun_d",icon:"☀️",name:"Desayuno",kcal:693,ings:[{n:"Leche entera",q:"150 ml"},{n:"Café",q:"30 ml"},{n:"Pan integral",q:"40 g"},{n:"Huevos camperos",q:"120 g"},{n:"Queso cottage",q:"100 g"},{n:"Queso Philadelphia",q:"50 g"},{n:"Melón",q:"200 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"}]},{id:"lun_c",icon:"🍽️",name:"Comida",kcal:610,ings:[{n:"Lentejas bote",q:"210 g"},{n:"Chorizo asturiano",q:"40 g"},{n:"Huesos jamón",q:"20 g"},{n:"Zanahoria",q:"60 g"},{n:"Patata",q:"80 g"},{n:"Pimientos",q:"40 g"},{n:"Cebolla",q:"50 g"},{n:"Ajo",q:"10 g"},{n:"Agua",q:"300 ml"},{n:"Aceite de oliva virgen extra",q:"5 ml"},{n:"Pan integral",q:"30 g"}]},{id:"lun_e",icon:"🌙",name:"Cena",kcal:780,ings:[{n:"Canónigos",q:"100 g"},{n:"Manzana",q:"100 g"},{n:"Cebolla morada",q:"25 g"},{n:"Carne magra de cerdo",q:"250 g"},{n:"Miel",q:"20 g"},{n:"Mostaza",q:"30 g"},{n:"Cebolla",q:"100 g"},{n:"Patata",q:"150 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Yogur griego natural ligero",q:"125 g"},{n:"Chocolate negro 85%",q:"8 g"}]}]},mar:{label:"Martes",meals:[{id:"mar_d",icon:"☀️",name:"Desayuno",kcal:650,ings:[{n:"Leche entera",q:"150 ml"},{n:"Café",q:"30 ml"},{n:"Pan integral",q:"40 g"},{n:"Huevos camperos",q:"120 g"},{n:"Atún al natural",q:"120 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Nectarina",q:"180 g"}]},{id:"mar_c",icon:"🍽️",name:"Comida",kcal:720,ings:[{n:"Arroz basmati",q:"70 g"},{n:"Calabacín",q:"150 g"},{n:"Cebolla",q:"50 g"},{n:"Tomate frito básico",q:"40 g"},{n:"Berenjena",q:"120 g"},{n:"Huevos camperos",q:"180 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"}]},{id:"mar_e",icon:"🌙",name:"Cena",kcal:680,ings:[{n:"Coliflor",q:"250 g"},{n:"Aceite de oliva virgen extra",q:"5 ml"},{n:"Dorada",q:"300 g"},{n:"Patata",q:"120 g"},{n:"Cebolla",q:"50 g"},{n:"Yogur griego natural ligero",q:"125 g"},{n:"Chocolate negro 85%",q:"8 g"}]}]},mie:{label:"Miércoles",meals:[{id:"mie_d",icon:"☀️",name:"Desayuno",kcal:640,ings:[{n:"Leche entera",q:"150 ml"},{n:"Café",q:"30 ml"},{n:"Pan integral",q:"40 g"},{n:"Huevos camperos",q:"120 g"},{n:"Jamón cocido",q:"80 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Melón",q:"200 g"}]},{id:"mie_c",icon:"🍽️",name:"Comida",kcal:820,ings:[{n:"Garbanzos bote",q:"210 g"},{n:"Atún al natural",q:"180 g"},{n:"Queso feta",q:"60 g"},{n:"Tomate",q:"120 g"},{n:"Queso cottage",q:"100 g"},{n:"Yogur griego natural ligero",q:"60 g"},{n:"Menta",q:"30 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"}]},{id:"mie_e",icon:"🌙",name:"Cena",kcal:760,ings:[{n:"Pan cristal",q:"70 g"},{n:"Carne picada de ternera",q:"180 g"},{n:"Huevos camperos",q:"60 g"},{n:"Queso mozzarella en lonchas",q:"20 g"},{n:"Pepinillos",q:"40 g"},{n:"Tomate",q:"20 g"},{n:"Cebolleta",q:"20 g"},{n:"Lechuga",q:"20 g"},{n:"Aceite de oliva virgen extra",q:"5 ml"},{n:"Yogur griego natural ligero",q:"125 g"},{n:"Chocolate negro 85%",q:"8 g"}]}]},jue:{label:"Jueves",meals:[{id:"jue_d",icon:"☀️",name:"Desayuno",kcal:680,ings:[{n:"Leche entera",q:"150 ml"},{n:"Café",q:"30 ml"},{n:"Queso cottage",q:"200 g"},{n:"Nectarina",q:"360 g"}]},{id:"jue_c",icon:"🍽️",name:"Comida",kcal:740,ings:[{n:"Pasta de lenteja roja",q:"70 g"},{n:"Carne picada de pollo/pavo",q:"220 g"},{n:"Tomate frito básico",q:"40 g"},{n:"Queso cottage",q:"100 g"},{n:"Aceite de oliva virgen extra",q:"5 ml"}]},{id:"jue_e",icon:"🌙",name:"Cena",kcal:720,ings:[{n:"Huesos jamón",q:"40 g"},{n:"Fideo cabello de ángel",q:"30 g"},{n:"Filete de ternera",q:"300 g"},{n:"Batata",q:"100 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Yogur griego natural ligero",q:"125 g"},{n:"Chocolate negro 85%",q:"8 g"}]}]},vie:{label:"Viernes",meals:[{id:"vie_d",icon:"☀️",name:"Desayuno",kcal:660,ings:[{n:"Leche entera",q:"150 ml"},{n:"Café",q:"30 ml"},{n:"Pan integral",q:"40 g"},{n:"Huevos camperos",q:"120 g"},{n:"Claras de huevo",q:"150 g"},{n:"Jamón cocido",q:"60 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Melón",q:"200 g"}]},{id:"vie_c",icon:"🍽️",name:"Comida",kcal:780,ings:[{n:"Espárragos trigueros",q:"250 g"},{n:"Secreto de cerdo",q:"300 g"},{n:"Patata",q:"150 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"}]},{id:"vie_e",icon:"🌙",name:"Cena",kcal:700,ings:[{n:"Tortilla de trigo integral",q:"72 g"},{n:"Tomate frito básico",q:"40 g"},{n:"Queso rallado mozzarella",q:"30 g"},{n:"Jamón serrano",q:"100 g"},{n:"Cebolla",q:"50 g"},{n:"Atún al natural",q:"60 g"},{n:"Chocolate negro 85%",q:"8 g"},{n:"Yogur griego natural ligero",q:"125 g"}]}]},sab:{label:"Sábado",meals:[{id:"sab_d",icon:"☀️",name:"Desayuno",kcal:620,ings:[{n:"Leche entera",q:"150 ml"},{n:"Pan integral",q:"40 g"},{n:"Huevos camperos",q:"120 g"},{n:"Atún al natural",q:"60 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Melocotón",q:"180 g"},{n:"Café",q:"30 ml"}]},{id:"sab_c",icon:"🍽️",name:"Comida",kcal:750,ings:[{n:"Arroz basmati",q:"60 g"},{n:"Salmón",q:"250 g"},{n:"Tomate",q:"80 g"},{n:"Maíz dulce",q:"40 g"},{n:"Mango",q:"150 g"},{n:"Miel",q:"20 g"},{n:"Mostaza",q:"30 g"}]},{id:"sab_e",icon:"🌙",name:"Cena",kcal:680,ings:[{n:"Calabacín",q:"250 g"},{n:"Pechuga de pollo",q:"250 g"},{n:"Cebolla",q:"50 g"},{n:"Tomate frito básico",q:"40 g"},{n:"Queso rallado mozzarella",q:"30 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Yogur griego natural ligero",q:"125 g"},{n:"Chocolate negro 85%",q:"8 g"}]}]},dom:{label:"Domingo",meals:[{id:"dom_d",icon:"☀️",name:"Desayuno",kcal:530,ings:[{n:"Leche entera",q:"150 ml"},{n:"Café",q:"30 ml"},{n:"Pan integral",q:"40 g"},{n:"Salmón ahumado",q:"100 g"},{n:"Tomate frito básico",q:"40 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Sandía",q:"250 g"}]},{id:"dom_c",icon:"🍽️",name:"Comida",kcal:0,ings:[{n:"Comida libre con moderación",q:""}]},{id:"dom_e",icon:"🌙",name:"Cena",kcal:580,ings:[{n:"Tortilla de trigo integral",q:"72 g"},{n:"Gamba pelada cruda",q:"250 g"},{n:"Cebolla morada",q:"25 g"},{n:"Maíz dulce",q:"40 g"},{n:"Lima",q:"20 g"},{n:"Cilantro",q:"20 g"},{n:"Tomate",q:"120 g"},{n:"Aceite de oliva virgen extra",q:"10 ml"},{n:"Yogur griego natural ligero",q:"125 g"},{n:"Chocolate negro 85%",q:"8 g"}]}]}};
+
+const selected=new Set();const shopDone=new Set();
+function buildMenuDays(){Object.entries(MENU).forEach(([day,data])=>{const el=document.getElementById('day-'+day);el.innerHTML='<div class="section-title">'+data.label+'</div>'+data.meals.map(m=>`<div class="meal-card"><div class="meal-header" onclick="toggleMeal('${m.id}',this)"><span class="meal-icon">${m.icon}</span><span class="meal-name">${m.name}</span>${m.kcal>0?`<span class="meal-kcal">${m.kcal} kcal</span>`:''}<div class="meal-check" id="chk-${m.id}"><i class="ti ti-check"></i></div></div><div class="ingredients" style="display:none" id="ing-${m.id}">${m.ings.map(i=>`<div class="ing-item"><span class="ing-name">${i.n}</span><span class="ing-qty">${i.q}</span></div>`).join('')}</div></div>`).join('');});}
+function toggleMeal(id,header){const ingEl=document.getElementById('ing-'+id);const chk=document.getElementById('chk-'+id);ingEl.style.display=ingEl.style.display==='none'?'block':'none';if(selected.has(id)){selected.delete(id);chk.classList.remove('checked');}else{selected.add(id);chk.classList.add('checked');}updateShoppingList();}
+function updateShoppingList(){const products={};Object.values(MENU).forEach(day=>{day.meals.forEach(m=>{if(selected.has(m.id)){m.ings.forEach(i=>{if(!i.q)return;if(!products[i.n])products[i.n]=i.q;});}});});const items=Object.entries(products);const listEl=document.getElementById('shop-list');const countEl=document.getElementById('shop-count');const btn=document.getElementById('lista-btn');countEl.textContent=items.length+' producto'+(items.length!==1?'s':'');btn.innerHTML=`<i class="ti ti-shopping-cart"></i> Lista${items.length>0?'<span class="badge">'+items.length+'</span>':''}`;if(items.length===0){listEl.innerHTML='<div class="shop-empty">Selecciona comidas en el menú para añadir productos</div>';return;}listEl.innerHTML=items.map(([name,qty])=>{const done=shopDone.has(name);return`<div class="shop-item" onclick="toggleShop('${name.replace(/'/g,"\\'")}')"><div class="shop-cb${done?' done':''}" id="scb-${name.length}${name.charCodeAt(0)}"><i class="ti ti-check"></i></div><span class="shop-label${done?' done':''}">${name}</span><span class="shop-qty">${qty}</span></div>`;}).join('');}
+function toggleShop(name){if(shopDone.has(name))shopDone.delete(name);else shopDone.add(name);updateShoppingList();}
+function showDay(day,el){document.querySelectorAll('.day-view').forEach(d=>d.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('day-'+day).classList.add('active');el.classList.add('active');}
+function showView(v){document.getElementById('view-menu').style.display=v==='menu'?'block':'none';document.getElementById('view-lista').style.display=v==='lista'?'block':'none';document.querySelectorAll('.nav-btn').forEach((b,i)=>{b.classList.toggle('active',(v==='menu'&&i===0)||(v==='lista'&&i===1));});}
+buildMenuDays();
+</script>
+</body>
+</html>
